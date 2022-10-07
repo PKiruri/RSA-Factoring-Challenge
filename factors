@@ -1,12 +1,29 @@
-#!/usr/bin/env bash
-#First argument value is read by the variable $1 which will contain the filename for reading
+#!/usr/bin/python3
+"""factorize given set of numbers in a file to product of two small numbers"""
+from sys import argv
 
-FILE=$1
 
-# If the file exists in the current location then while loop will read the file line by line
+def factorize(number_to_check):
+    """"find two small numbers that multiply to give a given number"""
+    i = 2
 
-while read NUMBERS;
-do
-    factors=($(factor $NUMBERS))
-    echo "$NUMBERS=$(($NUMBERS/${factors[1]}))*${factors[1]}"
-done < $FILE
+    if number_to_check < 2:
+        return
+
+    while number_to_check % i:
+        i += 1
+    print("{:.0f}={:.0f}*{:.0f}".format(number_to_check, number_to_check / i, i))
+
+if len(argv) != 2:
+    exit()
+
+try:
+    with open(argv[1]) as file:
+        line = file.readline()
+
+        while line != "":
+            number_to_check = int(line.split('\n')[0])
+            factorize(number_to_check)
+            line = file.readline()
+except:
+    pass
